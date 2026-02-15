@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ApiKeyChecker } from './components/ApiKeyChecker';
 import { ImageUploader } from './components/ImageUploader';
 import { PasswordGate } from './components/PasswordGate';

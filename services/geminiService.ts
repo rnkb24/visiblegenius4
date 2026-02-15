@@ -64,15 +64,22 @@ export const generateTransmutedImage = async (
 
     return foundImageUrl;
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("VisibleGenius Service Error:", error);
     
+    let errorMessage = "";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "object" && error !== null && "message" in error) {
+      errorMessage = String((error as any).message);
+    }
+
     // Improved error handling for common API issues
-    if (error.message?.includes("400") || error.message?.includes("INVALID_ARGUMENT")) {
+    if (errorMessage.includes("400") || errorMessage.includes("INVALID_ARGUMENT")) {
       throw new Error("Engine Configuration Error: The model rejected this parameter combination. Please try a different formula or image.");
     }
     
-    if (error.message?.includes("429")) {
+    if (errorMessage.includes("429")) {
       throw new Error("Rate limit exceeded. Please wait a moment before trying another generation.");
     }
 

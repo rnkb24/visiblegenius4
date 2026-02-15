@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { MODEL_NAME } from "../constants";
+import { MODEL_NAME, ASPECT_RATIO_1_1 } from "../constants";
 
 /**
  * Sends the image and secret prompt to the Gemini 3 Pro (Nano Banana Pro) engine.
@@ -9,7 +9,7 @@ import { MODEL_NAME } from "../constants";
 export const generateTransmutedImage = async (
   base64Image: string,
   secretPrompt: string,
-  aspectRatio: string = "1:1"
+  aspectRatio: string = ASPECT_RATIO_1_1
 ): Promise<string> => {
   // Fresh instance to ensure the most recent API key from the environment
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });

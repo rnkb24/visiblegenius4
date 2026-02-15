@@ -7,6 +7,7 @@ import { ResultsView } from './components/ResultsView';
 import { generateTransmutedImage } from './services/geminiService';
 import { AppStatus, GeneratedImage, StylePreset } from './types';
 import { STYLE_PRESETS } from './constants';
+import { StyleButton } from './components/StyleButton';
 
 const App: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -105,6 +106,10 @@ const App: React.FC = () => {
     setErrorMsg(null);
   };
 
+  const handleStyleSelect = useCallback((style: StylePreset) => {
+    setSelectedStyle(style);
+  }, []);
+
   if (!isAuthorized) {
     return <PasswordGate onAuthorized={() => setIsAuthorized(true)} />;
   }
@@ -175,21 +180,13 @@ const App: React.FC = () => {
                         <h3 className="font-black text-2xl uppercase mb-4 border-b-2 border-black pb-2">Select Style</h3>
                         <div className="flex flex-col gap-0 overflow-y-auto pr-2 custom-scrollbar flex-1">
                             {STYLE_PRESETS.map((style, index) => (
-                                <button
+                                <StyleButton
                                     key={style.id}
-                                    onClick={() => setSelectedStyle(style)}
-                                    className={`
-                                        flex flex-col items-start text-left px-4 py-4 border-b-2 last:border-b-0 border-black/10 transition-colors rounded-lg
-                                        ${selectedStyle.id === style.id 
-                                            ? 'bg-[#2E5339] text-white' 
-                                            : 'hover:bg-black/5 text-black'}
-                                    `}
-                                >
-                                    <span className="font-bold text-sm uppercase block mb-1 tracking-wide">{index + 1}. {style.label}</span>
-                                    <span className={`text-[10px] leading-tight block font-medium uppercase ${selectedStyle.id === style.id ? 'opacity-100' : 'opacity-90'}`}>
-                                        {style.description}
-                                    </span>
-                                </button>
+                                    style={style}
+                                    index={index}
+                                    isSelected={selectedStyle.id === style.id}
+                                    onSelect={handleStyleSelect}
+                                />
                             ))}
                         </div>
                     </div>

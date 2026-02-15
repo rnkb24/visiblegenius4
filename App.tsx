@@ -4,6 +4,7 @@ import { ImageUploader } from './components/ImageUploader';
 import { PasswordGate } from './components/PasswordGate';
 import { ProcessingView } from './components/ProcessingView';
 import { ResultsView } from './components/ResultsView';
+import { detectAspectRatio } from "./utils/imageUtils";
 import { generateTransmutedImage } from './services/geminiService';
 import { AppStatus, GeneratedImage, StylePreset } from './types';
 import { STYLE_PRESETS } from './constants';
@@ -21,22 +22,6 @@ const App: React.FC = () => {
   const cleanBase64 = (dataUrl: string) => {
     return dataUrl.split(',')[1] || dataUrl;
   };
-
-  const detectAspectRatio = (base64: string): Promise<string> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const ratio = img.width / img.height;
-        if (ratio > 1.5) resolve("16:9");
-        else if (ratio > 1.1) resolve("4:3");
-        else if (ratio < 0.6) resolve("9:16");
-        else if (ratio < 0.9) resolve("3:4");
-        else resolve("1:1");
-      };
-      img.src = base64;
-    });
-  };
-
   const processImage = useCallback(async (base64Input: string, ratio: string) => {
     setStatus(AppStatus.PROCESSING);
     setErrorMsg(null);
@@ -44,9 +29,7 @@ const App: React.FC = () => {
 
     try {
       const cleanInput = cleanBase64(base64Input);
-      const processedImage = await generateTransmutedImage(cleanInput, selectedStyle.prompt, ratio);
-
-      setImages({
+      const processedImage = await generateTransmutedImage(cleanInput, selectedStyle.prompt, ratio);      setImages({
         original: base64Input,
         processed: processedImage,
       });
@@ -92,9 +75,7 @@ const App: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [images, selectedStyle]);
-
-  const handleLogout = () => {
+  }, [images, selectedStyle]);  const handleLogout = () => {
     setIsAuthorized(false);
   };
 
@@ -107,9 +88,7 @@ const App: React.FC = () => {
 
   if (!isAuthorized) {
     return <PasswordGate onAuthorized={() => setIsAuthorized(true)} />;
-  }
-
-  if (!apiKeyReady) {
+  }  if (!apiKeyReady) {
     return (
       <div className="min-h-screen bg-[#91d290] flex items-center justify-center p-8">
         <ApiKeyChecker onReady={() => setApiKeyReady(true)} />
@@ -206,9 +185,7 @@ const App: React.FC = () => {
                             currentImage={previewImage}
                             detectedRatio={detectedRatio}
                         />
-                    </div>
-
-                    {/* Action Area: Order 3 on Mobile */}
+                    </div>                    {/* Action Area: Order 3 on Mobile */}
                     <div className="order-3 lg:order-none flex flex-col gap-4">
                         <button
                             onClick={handleStartProcessing}
@@ -236,9 +213,7 @@ const App: React.FC = () => {
             <span className="font-bold text-[10px] tracking-widest uppercase opacity-60">BETA v0.6</span>
             <span className="font-bold text-[10px] tracking-widest uppercase opacity-60">DESIGNED BY RON RADOM</span>
         </div>
-      </div>
-
-    </div>
+      </div>    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface PasswordGateProps {
   onAuthorized: () => void;
@@ -8,6 +8,13 @@ export const PasswordGate: React.FC<PasswordGateProps> = ({ onAuthorized }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === 'photo') {
@@ -15,7 +22,6 @@ export const PasswordGate: React.FC<PasswordGateProps> = ({ onAuthorized }) => {
     } else {
       setError(true);
       setPassword('');
-      setTimeout(() => setError(false), 500);
     }
   };
 

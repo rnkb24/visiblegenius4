@@ -22,19 +22,23 @@ const App: React.FC = () => {
     return dataUrl.split(',')[1] || dataUrl;
   };
 
-  const detectAspectRatio = (base64: string): Promise<string> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const ratio = img.width / img.height;
-        if (ratio > 1.5) resolve("16:9");
-        else if (ratio > 1.1) resolve("4:3");
-        else if (ratio < 0.6) resolve("9:16");
-        else if (ratio < 0.9) resolve("3:4");
-        else resolve("1:1");
-      };
-      img.src = base64;
-    });
+  const detectAspectRatio = async (base64: string): Promise<string> => {
+    try {
+      const response = await fetch(base64);
+      const blob = await response.blob();
+      const bitmap = await createImageBitmap(blob);
+      const ratio = bitmap.width / bitmap.height;
+      bitmap.close();
+
+      if (ratio > 1.5) return "16:9";
+      else if (ratio > 1.1) return "4:3";
+      else if (ratio < 0.6) return "9:16";
+      else if (ratio < 0.9) return "3:4";
+      return "1:1";
+    } catch (e) {
+      console.error("Failed to detect aspect ratio", e);
+      return "1:1";
+    }
   };
 
   const processImage = useCallback(async (base64Input: string, ratio: string) => {

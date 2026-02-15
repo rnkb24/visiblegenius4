@@ -2,10 +2,9 @@ import React from 'react';
 
 interface ProcessingViewProps {
   protocol: string;
-  ratio: string;
 }
 
-export const ProcessingView: React.FC<ProcessingViewProps> = ({ protocol, ratio }) => {
+export const ProcessingView: React.FC<ProcessingViewProps> = ({ protocol }) => {
   return (
     // Changed background color to #FF751F
     <div className="fixed inset-0 z-50 bg-[#FF751F] flex flex-col items-center justify-between text-black font-sans animate-fade-in p-6">

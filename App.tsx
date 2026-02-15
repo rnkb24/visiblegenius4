@@ -105,6 +105,10 @@ const App: React.FC = () => {
     setErrorMsg(null);
   };
 
+  const handleApiKeyReady = useCallback(() => {
+    setApiKeyReady(true);
+  }, []);
+
   if (!isAuthorized) {
     return <PasswordGate onAuthorized={() => setIsAuthorized(true)} />;
   }
@@ -112,7 +116,7 @@ const App: React.FC = () => {
   if (!apiKeyReady) {
     return (
       <div className="min-h-screen bg-[#91d290] flex items-center justify-center p-8">
-        <ApiKeyChecker onReady={() => setApiKeyReady(true)} />
+        <ApiKeyChecker onReady={handleApiKeyReady} />
       </div>
     );
   }

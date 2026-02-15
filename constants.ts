@@ -119,3 +119,15 @@ Avoid over-processing or artificial effects.`
     prompt: 'Retake this image and make the person in it look slim'
   }
 ];
+// Aspect Ratio Constants
+export const ASPECT_RATIO_16_9 = "16:9";
+export const ASPECT_RATIO_4_3 = "4:3";
+export const ASPECT_RATIO_9_16 = "9:16";
+export const ASPECT_RATIO_3_4 = "3:4";
+export const ASPECT_RATIO_1_1 = "1:1";
+
+// Aspect Ratio Thresholds
+export const ASPECT_RATIO_THRESHOLD_16_9 = 1.5;
+export const ASPECT_RATIO_THRESHOLD_4_3 = 1.1;
+export const ASPECT_RATIO_THRESHOLD_9_16 = 0.6;
+export const ASPECT_RATIO_THRESHOLD_3_4 = 0.9;

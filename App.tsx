@@ -6,14 +6,14 @@ import { ProcessingView } from './components/ProcessingView';
 import { ResultsView } from './components/ResultsView';
 import { generateTransmutedImage } from './services/geminiService';
 import { AppStatus, GeneratedImage, StylePreset } from './types';
-import { STYLE_PRESETS } from './constants';
+import { STYLE_PRESETS, ASPECT_RATIO_16_9, ASPECT_RATIO_4_3, ASPECT_RATIO_9_16, ASPECT_RATIO_3_4, ASPECT_RATIO_1_1, ASPECT_RATIO_THRESHOLD_16_9, ASPECT_RATIO_THRESHOLD_4_3, ASPECT_RATIO_THRESHOLD_9_16, ASPECT_RATIO_THRESHOLD_3_4 } from './constants';
 
 const App: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [status, setStatus] = useState<AppStatus>(AppStatus.IDLE);
   const [images, setImages] = useState<GeneratedImage | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [detectedRatio, setDetectedRatio] = useState<string>("1:1");
+  const [detectedRatio, setDetectedRatio] = useState<string>(ASPECT_RATIO_1_1);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [apiKeyReady, setApiKeyReady] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<StylePreset>(STYLE_PRESETS[0]);
@@ -27,11 +27,11 @@ const App: React.FC = () => {
       const img = new Image();
       img.onload = () => {
         const ratio = img.width / img.height;
-        if (ratio > 1.5) resolve("16:9");
-        else if (ratio > 1.1) resolve("4:3");
-        else if (ratio < 0.6) resolve("9:16");
-        else if (ratio < 0.9) resolve("3:4");
-        else resolve("1:1");
+        if (ratio > ASPECT_RATIO_THRESHOLD_16_9) resolve(ASPECT_RATIO_16_9);
+        else if (ratio > ASPECT_RATIO_THRESHOLD_4_3) resolve(ASPECT_RATIO_4_3);
+        else if (ratio < ASPECT_RATIO_THRESHOLD_9_16) resolve(ASPECT_RATIO_9_16);
+        else if (ratio < ASPECT_RATIO_THRESHOLD_3_4) resolve(ASPECT_RATIO_3_4);
+        else resolve(ASPECT_RATIO_1_1);
       };
       img.src = base64;
     });

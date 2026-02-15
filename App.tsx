@@ -8,6 +8,14 @@ import { generateTransmutedImage } from './services/geminiService';
 import { AppStatus, GeneratedImage, StylePreset } from './types';
 import { STYLE_PRESETS } from './constants';
 
+const getErrorMessage = (error: unknown): string | undefined => {
+  if (error instanceof Error) return error.message;
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+      return String((error as { message: unknown }).message);
+  }
+  return undefined;
+};
+
 const App: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [status, setStatus] = useState<AppStatus>(AppStatus.IDLE);
@@ -51,11 +59,13 @@ const App: React.FC = () => {
         processed: processedImage,
       });
       setStatus(AppStatus.SUCCESS);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       
+      const errorMessage = getErrorMessage(err);
+
       // Handle 'Requested entity was not found' error by prompting for key selection again
-      if (err.message && err.message.includes("Requested entity was not found")) {
+      if (errorMessage && errorMessage.includes("Requested entity was not found")) {
         setStatus(AppStatus.IDLE);
         if (window.aistudio && window.aistudio.openSelectKey) {
             await window.aistudio.openSelectKey();
@@ -64,7 +74,7 @@ const App: React.FC = () => {
       }
 
       setStatus(AppStatus.ERROR);
-      setErrorMsg(err.message || "Transformation interrupted.");
+      setErrorMsg(errorMessage || "Transformation interrupted.");
     }
   }, [selectedStyle]);
 

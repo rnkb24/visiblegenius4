@@ -1,3 +1,4 @@
+import { Navbar } from './Navbar';
 import React, { useRef } from 'react';
 import { GeneratedImage, StylePreset } from '../types';
 
@@ -13,20 +14,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({ images, style, onDownl
     // Updated background color to #FF934F
     <div className="min-h-screen w-full bg-[#FF934F] text-black font-sans flex flex-col animate-fade-in">
        {/* Top Navigation Bar */}
-      <nav className="w-full px-6 py-6 flex justify-between items-center border-b-4 border-black">
-        <div className="flex items-center gap-3">
-            <span className="font-black text-2xl tracking-tighter uppercase">VISIBLE GENIUS</span>
-        </div>
-        <div className="flex items-center gap-3">
-             <button 
-                onClick={onReset}
-                // Updated text color to #FF934F for consistency
-                className="bg-black border-2 border-black px-4 py-2 text-[10px] font-semibold tracking-widest text-[#FF934F] hover:bg-transparent hover:text-black transition-colors uppercase rounded-md"
-             >
-                Close Session
-             </button>
-        </div>
-      </nav>
+      <Navbar onCloseSession={onReset} themeColor="#FF934F" />
 
       <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full p-6 lg:p-12">
          {/* Header Section: Left aligned on mobile, Bottom aligned on desktop */}

@@ -1,3 +1,4 @@
+import { Navbar } from './components/Navbar';
 import React, { useState, useCallback, useRef } from 'react';
 import { ApiKeyChecker } from './components/ApiKeyChecker';
 import { ImageUploader } from './components/ImageUploader';
@@ -139,19 +140,7 @@ const App: React.FC = () => {
        )}
 
        {/* Top Navigation Bar - Solid Green to stay above background */}
-      <nav className="w-full px-6 py-6 flex justify-between items-center border-b-4 border-black bg-[#91d290] z-20 relative">
-        <div className="flex items-center gap-3">
-            <span className="font-black text-2xl tracking-tighter text-black uppercase">VISIBLE GENIUS</span>
-        </div>
-        <div className="flex items-center gap-4">
-             <button 
-                onClick={handleLogout}
-                className="bg-black border-2 border-black px-4 py-2 text-xs font-semibold tracking-widest text-[#91d290] hover:bg-[#91d290] hover:text-black transition-colors uppercase rounded-md"
-             >
-                Close Session
-             </button>
-        </div>
-      </nav>
+      <Navbar onCloseSession={handleLogout} themeColor="#91d290" className="bg-[#91d290] z-20 relative" />
 
       {/* Main Content Area - Solid Green Background */}
       <div className="flex-1 w-full flex flex-col relative">

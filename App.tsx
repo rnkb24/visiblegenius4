@@ -135,7 +135,7 @@ const App: React.FC = () => {
       
        {/* Processing Overlay */}
        {status === AppStatus.PROCESSING && (
-         <ProcessingView protocol={selectedStyle.label} ratio={detectedRatio} />
+         <ProcessingView protocol={selectedStyle.label} />
        )}
 
        {/* Top Navigation Bar - Solid Green to stay above background */}

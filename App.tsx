@@ -23,7 +23,7 @@ const App: React.FC = () => {
   };
 
   const detectAspectRatio = (base64: string): Promise<string> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
         const ratio = img.width / img.height;
@@ -33,6 +33,7 @@ const App: React.FC = () => {
         else if (ratio < 0.9) resolve("3:4");
         else resolve("1:1");
       };
+      img.onerror = (error) => reject(error);
       img.src = base64;
     });
   };
@@ -70,8 +71,13 @@ const App: React.FC = () => {
 
   const handleImageSelect = useCallback(async (base64: string) => {
     setPreviewImage(base64);
-    const ratio = await detectAspectRatio(base64);
-    setDetectedRatio(ratio);
+    try {
+      const ratio = await detectAspectRatio(base64);
+      setDetectedRatio(ratio);
+    } catch (error) {
+      console.error("Failed to detect aspect ratio:", error);
+      setDetectedRatio("1:1");
+    }
     if (status === AppStatus.SUCCESS || status === AppStatus.ERROR) {
         setStatus(AppStatus.IDLE);
         setImages(null);

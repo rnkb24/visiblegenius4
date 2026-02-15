@@ -7,6 +7,7 @@ import { ResultsView } from './components/ResultsView';
 import { generateTransmutedImage } from './services/geminiService';
 import { AppStatus, GeneratedImage, StylePreset } from './types';
 import { STYLE_PRESETS } from './constants';
+import { cleanBase64 } from './utils';
 
 const App: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -18,9 +19,6 @@ const App: React.FC = () => {
   const [apiKeyReady, setApiKeyReady] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<StylePreset>(STYLE_PRESETS[0]);
 
-  const cleanBase64 = (dataUrl: string) => {
-    return dataUrl.split(',')[1] || dataUrl;
-  };
 
   const detectAspectRatio = (base64: string): Promise<string> => {
     return new Promise((resolve) => {

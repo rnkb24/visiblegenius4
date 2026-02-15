@@ -1,0 +1,18 @@
+runtime: python39
+
+handlers:
+  # Index path - Serve index.html from dist
+  - url: /
+    static_files: dist/index.html
+    upload: dist/index.html
+
+  # Static assets - Serve from dist folder
+  - url: /(.*)
+    static_files: dist/\1
+    upload: dist/(.*)
+
+# Automatic scaling for cost efficiency
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 0
+  max_instances: 1

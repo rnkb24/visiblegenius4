@@ -1,0 +1,22 @@
+{
+  "name": "visible-genius",
+  "version": "0.6.0",
+  "private": true,
+  "description": "Professional Image Transmutation Engine powered by Gemini 3 Pro",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "serve -s dist -l ${PORT:-8080}",
+    "deploy:gcp": "gcloud app deploy"
+  },
+  "dependencies": {
+    "@google/genai": "^1.41.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "vite": "^5.1.4",
+    "@vitejs/plugin-react": "^4.2.1",
+    "serve": "^14.2.1"
+  }
+}
